@@ -1,0 +1,31 @@
+name: dwh
+version: "1.0.0"
+config-version: 2
+profile: dwh
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: target
+clean-targets: [target, dbt_packages, logs]
+
+vars:
+  # Surrogate key del miembro "desconocido" (ver sql/sqlserver/05_unknown_members.sql)
+  unknown_sk: "00000000000000000000000000000000"
+  dim_date_start: "2020-01-01"
+  dim_date_end: "2035-12-31"
+  # Lookback del hecho para reprocesar líneas cuya dimensión llegó tarde
+  fact_lookback_hours: 2
+
+models:
+  dwh:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: dw
+      # Las tablas del DW se crean con DDL propio (PKs, FKs, columnstore).
+      # dbt solo hace MERGE incremental sobre ellas y falla si cambia el esquema.
+      +materialized: incremental
+      +incremental_strategy: merge
+      +on_schema_change: fail

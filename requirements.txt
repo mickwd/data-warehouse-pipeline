@@ -1,0 +1,21 @@
+# Núcleo (batch + streaming + dashboard)
+pandas>=2.2
+numpy>=1.26
+SQLAlchemy[asyncio]>=2.0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+httpx>=0.27
+
+# Drivers de base de datos
+pyodbc>=5.1            # SQL Server (requiere msodbcsql18 en el sistema)
+psycopg[binary]>=3.1   # PostgreSQL sync (OLTP de origen)
+asyncpg>=0.29          # PostgreSQL async (históricos de métricas)
+
+# Mensajería
+aiokafka>=0.11
+aio-pika>=9.4
+redis>=5.0
+
+# API y dashboard
+fastapi>=0.111
+uvicorn[standard]>=0.30

@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Estado actual de las entidades de origen, cargado por batch/run.py (MERGE desde landing).
+    schema: raw
+    loaded_at_field: _loaded_at
+    freshness:
+      warn_after: { count: 1, period: hour }
+      error_after: { count: 6, period: hour }
+    tables:
+      - name: customers
+        description: Clientes desde el OLTP (incremental por updated_at).
+        columns:
+          - name: customer_id
+            tests: [unique, not_null]
+      - name: products
+        description: Catálogo desde la API REST de productos.
+        columns:
+          - name: product_id
+            tests: [unique, not_null]
+      - name: order_lines
+        description: Líneas de pedido desde el OLTP (orders + order_items).

@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: row_hash
+        tests: [not_null]
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+      - name: list_price
+        description: Nulo cuando el origen mandó un precio negativo.
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+  - name: stg_order_lines
+    tests:
+      - unique_combination:
+          columns: [order_id, line_number]
+    columns:
+      - name: status
+        tests:
+          - accepted_values:
+              values: [pending, paid, shipped, delivered, cancelled, returned, unknown]

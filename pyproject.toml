@@ -1,0 +1,30 @@
+[project]
+name = "data-warehouse-pipeline"
+version = "1.0.0"
+description = "Pipeline batch y en tiempo real hacia un Data Warehouse dimensional"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra --strict-markers"
+filterwarnings = ["error::FutureWarning"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["dbt", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # tildes y eñes en strings y comentarios
+
+[tool.ruff.lint.isort]
+# la carpeta airflow/ del repo no es el paquete apache-airflow
+known-third-party = ["airflow"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+exclude = ["dbt/", "airflow/"]

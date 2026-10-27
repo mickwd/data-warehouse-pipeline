@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendario con clave yyyymmdd, nombres en castellano y semana ISO.
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+      - name: day_of_week
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7]
+              quote: false
+
+  - name: dim_customer
+    description: Clientes con historial SCD tipo 2 (valid_from / valid_to / is_current).
+    columns:
+      - name: customer_sk
+        tests: [unique, not_null]
+      - name: customer_id
+        tests:
+          - not_null
+          - single_current_version
+      - name: valid_from
+        tests: [not_null]
+      - name: valid_to
+        tests: [not_null]
+
+  - name: dim_product
+    description: Productos SCD tipo 1.
+    columns:
+      - name: product_sk
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [unique, not_null]
+
+  - name: fact_sales
+    description: Ventas a nivel línea de pedido.
+    tests:
+      - unique_combination:
+          columns: [order_id, line_number]
+    columns:
+      - name: order_line_key
+        tests: [unique, not_null]
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: customer_sk
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_sk
+      - name: product_sk
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_sk
+      - name: status
+        tests:
+          - accepted_values:
+              values: [pending, paid, shipped, delivered, cancelled, returned, unknown]
+      - name: quantity
+        tests: [not_null]

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ventas en vivo</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Ventas en tiempo real</h1>
+    <span id="status" class="status status--off">desconectado</span>
+  </header>
+
+  <main>
+    <section class="kpis">
+      <article class="kpi"><h2>Eventos (últ. ventana)</h2><p id="kpi-count">–</p></article>
+      <article class="kpi"><h2>Monto total</h2><p id="kpi-total">–</p></article>
+      <article class="kpi"><h2>Ticket promedio</h2><p id="kpi-avg">–</p></article>
+      <article class="kpi"><h2>p95 ticket</h2><p id="kpi-p95">–</p></article>
+    </section>
+
+    <section class="panel">
+      <h2>Monto por ventana tumbling (todos los canales)</h2>
+      <canvas id="chart-total" height="110"></canvas>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>Eventos por canal</h2>
+        <canvas id="chart-channels" height="160"></canvas>
+      </div>
+      <div class="panel">
+        <h2>Promedio y p95 (ventana deslizante)</h2>
+        <canvas id="chart-sliding" height="160"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Lo mínimo para correr los tests unitarios, sin drivers ni clientes de brokers
+pandas>=2.2
+numpy>=1.26
+SQLAlchemy>=2.0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+pytest>=8.2
+ruff>=0.5

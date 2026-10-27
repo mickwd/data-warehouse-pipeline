@@ -1,0 +1,15 @@
+dwh:
+  target: default
+  outputs:
+    default:
+      type: sqlserver
+      driver: "ODBC Driver 18 for SQL Server"
+      server: "{{ env_var('MSSQL_HOST', 'localhost') }}"
+      port: "{{ env_var('MSSQL_PORT', '1433') | as_number }}"
+      database: "{{ env_var('MSSQL_DATABASE', 'dwh') }}"
+      schema: dw
+      user: "{{ env_var('MSSQL_USER', 'sa') }}"
+      password: "{{ env_var('MSSQL_PASSWORD') }}"
+      encrypt: true
+      trust_cert: true
+      threads: 4
